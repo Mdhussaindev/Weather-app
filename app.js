@@ -1,106 +1,141 @@
-const apiKey = "YOUR_API_KEY";
 
-function showLoader(show){
-  document.getElementById("loader").classList.toggle("hidden", !show);
+let city_name = document.getElementById("user_city");
+let default_city = "Karachi";
+
+let temp_box = document.querySelector(".temp_box")
+
+const api_key = "711bc8780457bd2f4156dc13cd40d08a";
+
+let search_btn = document.getElementById("input_search_btn");
+let error_message = document.querySelector(".city_not_found_err");
+
+
+// let afterDay01 = document.querySelector(".AfterDay01");
+// let afterDay02 = document.querySelector(".AfterDay02");
+// let afterDay03 = document.querySelector(".AfterDay03");
+
+let tab_days = document.querySelectorAll(".tab_days")
+
+let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+let today = new Date();
+    for(let i = 0 ; i < 3 ; i++)
+{
+    let dayIndex = (today.getDay()+i+1)%7;
+    tab_days[i].innerText = days[dayIndex]
+    console.log(tab_days.innerText)
 }
 
-/* MAIN WEATHER */
 
-let city = cityInput || document.getElementById("city").value;
-city = city.trim();
-function getWeather(cityInput){
 
-  let city = cityInput || document.getElementById("city").value;
 
-  if(!city){
-    alert("City enter karo 😅");
-    return;
-  }
+function renderWeatherCard()
+{
 
-  showLoader(true);
+    // console.log(today)  
 
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-  .then(res => res.json())
-  .then(data => {
+    search_btn.addEventListener("click", handleSearch);
 
-    showLoader(false);
+    city_name.addEventListener("keypress",(e) => 
+    {
+        if(e.key === "Enter") handleSearch();
+    })
 
-    if(data.cod !== 200){
-      document.getElementById("desc").innerText = "City not found";
-      return;
+
+     function renderError(ErrorMessage)
+      {
+        error_message.style.display = "block";
+        error_message.innerHTML = `
+          <h3>${ErrorMessage}</h3>
+        `
+      }
+
+      function hideError()
+      {
+        error_message.style.display = "none";
+      }
+
+    function handleSearch()
+    {
+        let city = city_name.value.trim();
+
+        if(!city)
+        {
+            renderError("Please enter a city name!");
+            return;
+        }
+       
+        getWeatherData(city)
+
+    }
+     
+
+    function renderDate()
+    {
+        const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+        const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+        
+        let calender = document.querySelector(".calender_box")
+        let date = new Date()       
+
+        calender.innerHTML = `
+        <p class="day">${date.getDate()}</p>
+        <p class="month">${months[date.getMonth()]}</p>
+        <p class="year">${date.getFullYear()}</p>
+        <p class="week_day">${days[date.getDay()]}</p>
+        `
     }
 
-    document.getElementById("cityName").innerText = data.name;
-    document.getElementById("temp").innerText = data.main.temp + "°C";
-    document.getElementById("desc").innerText = data.weather[0].description;
-    document.getElementById("humidity").innerText = data.main.humidity + "%";
-    document.getElementById("wind").innerText = data.wind.speed + " km/h";
+    function renderTemp()
+    {
 
-    let weather = data.weather[0].main;
+        async function getWeatherData(city)
+        {
+            try {
+                let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`);
+                
+                if(!res.ok)
+                {
+                 throw new Error("City Not Found")
+                }
 
-    const icons = {
-      Clear: "https://cdn-icons-png.flaticon.com/512/6974/6974833.png",
-      Clouds: "https://cdn-icons-png.flaticon.com/512/414/414825.png",
-      Rain: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
-      Snow: "https://cdn-icons-png.flaticon.com/512/642/642000.png",
-      Mist: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png"
-    };
+                let data = await res.json()
+              
+                hideError()
 
-    let icon = document.getElementById("weatherIcon");
-    icon.classList.remove("fade-img");
-    void icon.offsetWidth; // restart animation
-    icon.classList.add("fade-img");
+                console.log(data)
+                
+                 temp_box.innerHTML =
+                    `
+                <p class="temp">${Math.round(data.main.temp)}<span id="deg-symbol">°</span></p>
+                <p class="clear">${data.weather[0].main}</p>
+                <div class="city_name">${data.name}</div>
+                <div class="humidity">Humidity <span>${data.main.humidity}%</span></div>
+                `
 
-    icon.src = icons[weather] || icons.Clear;
+       
+            }
+            catch(error)
+            {
+               console.log(error)
+               renderError("City Not Found!")
+            }
+        }
 
-    getForecast(city);
-
-  })
-}
-
-/* 5 DAY FORECAST */
-function getForecast(city){
-
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
-  .then(res => res.json())
-  .then(data => {
-
-    let box = document.getElementById("forecast");
-    box.innerHTML = "";
-
-    for(let i=0; i<data.list.length; i+=8){
-
-      let day = data.list[i];
-
-      box.innerHTML += `
-        <div class="forecast-card">
-          <p>${day.dt_txt.split(" ")[0]}</p>
-          <p>${day.main.temp}°C</p>
-        </div>
-      `;
+        return getWeatherData;
     }
-  });
-}
 
-/* AUTO LOCATION */
-function getLocationWeather(){
+    renderDate()
 
-  navigator.geolocation.getCurrentPosition(pos => {
+    let getWeatherData = renderTemp();   // to learn this later
 
-    let lat = pos.coords.latitude;
-    let lon = pos.coords.longitude;
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-    .then(res => res.json())
-    .then(data => {
-      getWeather(data.name);
-    });
-
-  });
+    getWeatherData(default_city);
 
 }
 
-/* DARK MODE */
-function toggleMode(){
-  document.body.classList.toggle("dark");
-}
+
+renderWeatherCard()
+
+
+
+    
