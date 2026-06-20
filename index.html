@@ -9,39 +9,39 @@
 <body>
 
 <div class="toggle">
-    <button onclick="toggleMode()">🌙 / ☀️</button>
+  <button onclick="toggleMode()">🌙</button>
 </div>
 
 <div class="container">
 
-    <h1>Weather App</h1>
+  <h1>Weather App</h1>
 
-    <div class="search">
-        <input type="text" id="city" placeholder="Enter city">
-        <button onclick="getWeather()">Search</button>
+  <div class="search">
+    <input type="text" id="city" placeholder="Enter city">
+    <button onclick="getWeather()">Search</button>
+  </div>
+
+  <button class="loc-btn" onclick="getLocationWeather()">📍 My Location</button>
+
+  <div id="loader" class="loader hidden"></div>
+
+  <div id="weatherBox">
+
+    <img id="weatherIcon" class="fade-img">
+
+    <h2 id="cityName">--</h2>
+    <h3 id="temp">--</h3>
+    <p id="desc">Search city</p>
+
+    <div class="info">
+      <div class="card">💧 <span id="humidity"></span></div>
+      <div class="card">🌬️ <span id="wind"></span></div>
     </div>
 
-    <button class="location-btn" onclick="getLocationWeather()">📍 My Location</button>
+  </div>
 
-    <div id="loader" class="loader hidden"></div>
-
-    <div id="weatherBox">
-
-        <img id="weatherIcon" width="90">
-
-        <h2 id="cityName"></h2>
-        <h3 id="temp"></h3>
-        <p id="desc"></p>
-
-        <div class="details">
-            <div>💧 <span id="humidity"></span></div>
-            <div>🌬️ <span id="wind"></span></div>
-        </div>
-
-    </div>
-
-    <h3>5-Day Forecast</h3>
-    <div id="forecast"></div>
+  <h3>5-Day Forecast</h3>
+  <div id="forecast"></div>
 
 </div>
 
