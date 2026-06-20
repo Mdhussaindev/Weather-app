@@ -9,11 +9,6 @@ const api_key = "711bc8780457bd2f4156dc13cd40d08a";
 let search_btn = document.getElementById("input_search_btn");
 let error_message = document.querySelector(".city_not_found_err");
 
-
-// let afterDay01 = document.querySelector(".AfterDay01");
-// let afterDay02 = document.querySelector(".AfterDay02");
-// let afterDay03 = document.querySelector(".AfterDay03");
-
 let tab_days = document.querySelectorAll(".tab_days")
 
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -32,15 +27,12 @@ let today = new Date();
 function renderWeatherCard()
 {
 
-    // console.log(today)  
-
     search_btn.addEventListener("click", handleSearch);
 
     city_name.addEventListener("keypress",(e) => 
     {
         if(e.key === "Enter") handleSearch();
     })
-
 
      function renderError(ErrorMessage)
       {
@@ -127,7 +119,7 @@ function renderWeatherCard()
 
     renderDate()
 
-    let getWeatherData = renderTemp();   // to learn this later
+    let getWeatherData = renderTemp();  
 
     getWeatherData(default_city);
 

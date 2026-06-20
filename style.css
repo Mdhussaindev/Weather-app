@@ -13,7 +13,6 @@
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     padding: 10px;
-    /* border: 1px solid lime; */
 }
 
 
@@ -42,7 +41,6 @@
  {
     background-color:#D9D9D9 ;
     padding:8px;
-    /* border-radius:4px; */
     border-top-right-radius: 4px;
     border-bottom-left-radius: 4px;
  }
@@ -66,8 +64,6 @@
     border: none;
     padding:8px;
     border-radius: 4px;
-     /* border-top-left-radius: 4px; */
-    /* border-bottom-right-radius: 4px; */
     cursor:pointer;
  }
 
@@ -84,15 +80,13 @@
     justify-content: space-evenly;
  }
 
- /* ------------ */
- 
+
  .main_section 
  {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* text-shadow: 1px 1px 1px yellow; */
     gap:5px
  }
  
@@ -105,19 +99,6 @@
     background-color:#D9D9D9 ;
     border: 1px solid white;
     border-radius: 4px;
-    
-    /* gap:8px;             spaceing */
-    /* background-image: url('assets/diff_Seasong.jpg'); */
-    /* background-position: 0px 0px; */   /*Summer*/
-    /* background-position: 235px 0px; */   /*Night_clear*/
-    /* background-position: -245px 0px; */  /*Rain*/
-
-    /* ---------> */
-    /* background-position: 0px -167px;   cloud */
-    /* background-position: 235px -167px;   ThunderStorm */
-    /* background-size: 720px 370px; Sunny */
-    /* background-position: -196px -167px;    */
-
     text-shadow: 1px 1px 2px white;
 
  }
